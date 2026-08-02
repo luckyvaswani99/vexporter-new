@@ -35,4 +35,24 @@ return [
         ],
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Payment gateways
+    |--------------------------------------------------------------------------
+    | Credentials must be read through config (never env()) so `config:cache`
+    | in production does not silently blank them out.
+    */
+
+    'razorpay' => [
+        'key' => env('RAZORPAY_KEY', 'rzp_test_dummy'),
+        'secret' => env('RAZORPAY_SECRET', 'secret_dummy'),
+        'webhook_secret' => env('RAZORPAY_WEBHOOK_SECRET', 'whsec_dummy'),
+    ],
+
+    'stripe' => [
+        'key' => env('STRIPE_KEY', 'pk_test_dummy'),
+        'secret' => env('STRIPE_SECRET', 'sk_test_dummy'),
+        'webhook_secret' => env('STRIPE_WEBHOOK_SECRET', 'whsec_dummy'),
+    ],
+
 ];

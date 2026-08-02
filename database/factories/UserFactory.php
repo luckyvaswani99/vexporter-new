@@ -30,6 +30,10 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
+            'type' => User::TYPE_BUYER,
+            'is_active' => true,
+            'locale' => 'en',
+            'default_currency' => 'USD',
         ];
     }
 

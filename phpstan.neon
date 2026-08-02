@@ -1,0 +1,16 @@
+includes:
+    - vendor/larastan/larastan/extension.neon
+
+parameters:
+    paths:
+        - app
+        - database/factories
+        - database/seeders
+        - routes
+
+    level: 3
+
+    # Filament's generated page classes are thin subclasses covered by feature tests.
+    excludePaths:
+        - app/Filament/*/Pages/*
+        - app/Filament/Vendor/Resources/*/Pages/*
