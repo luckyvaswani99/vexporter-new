@@ -68,6 +68,21 @@ delete that file — one less moving part.
 ## 4. First-run setup over SSH
 
 ```bash
+cd ~/public_html && bash hostinger-setup.sh
+```
+
+The script finds a PHP 8.3+ binary, checks the extensions, installs Composer if
+the host does not ship it, then runs the install, migrations, reference seeders,
+asset publishing and preflight. It is safe to re-run.
+
+The first run stops after creating `.env` and tells you what to fill in
+(`APP_URL`, `DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD`). Edit it with
+`nano .env` and run the script again.
+
+<details>
+<summary>The same steps by hand, if you would rather not run a script</summary>
+
+```bash
 cd ~/public_html
 
 cp .env.hostinger.example .env
@@ -86,6 +101,8 @@ php artisan filament:assets
 php artisan optimize
 php artisan vexporter:preflight
 ```
+
+</details>
 
 `preflight` must come back with no failures before you point a real domain at
 this. Warnings about payment credentials are expected until the gateway keys
