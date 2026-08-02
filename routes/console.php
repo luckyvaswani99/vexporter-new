@@ -34,6 +34,19 @@ Schedule::command('vexporter:generate-payouts')
     ->withoutOverlapping()
     ->onOneServer();
 
+/*
+ * Shared hosting has no Supervisor, so the scheduler drains the queue itself:
+ * one worker per minute that exits as soon as the queue is empty, and always
+ * before the next tick. On a server with a real worker daemon the queue is
+ * already empty, so this costs nothing — but leave it off for Redis setups
+ * where a long-running worker is doing the job properly.
+ */
+if (config('queue.default') === 'database') {
+    Schedule::command('queue:work --stop-when-empty --max-time=50 --tries=3')
+        ->everyMinute()
+        ->withoutOverlapping();
+}
+
 // Housekeeping.
 Schedule::command('queue:prune-batches --hours=48')->daily();
 Schedule::command('queue:prune-failed --hours=336')->daily();

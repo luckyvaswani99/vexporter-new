@@ -1,0 +1,142 @@
+{
+  "_fonts-Jz2PRzgb.css": {
+    "file": "assets/fonts-Jz2PRzgb.css",
+    "src": "_fonts-Jz2PRzgb.css"
+  },
+  "_inter-300-normal-BVlfKGgI.woff2": {
+    "file": "assets/inter-300-normal-BVlfKGgI.woff2",
+    "src": "_inter-300-normal-BVlfKGgI.woff2"
+  },
+  "_inter-300-normal-i8F0SvXL.woff": {
+    "file": "assets/inter-300-normal-i8F0SvXL.woff",
+    "src": "_inter-300-normal-i8F0SvXL.woff"
+  },
+  "_inter-400-normal-C38fXH4l.woff2": {
+    "file": "assets/inter-400-normal-C38fXH4l.woff2",
+    "src": "_inter-400-normal-C38fXH4l.woff2"
+  },
+  "_inter-400-normal-CyCys3Eg.woff": {
+    "file": "assets/inter-400-normal-CyCys3Eg.woff",
+    "src": "_inter-400-normal-CyCys3Eg.woff"
+  },
+  "_inter-500-normal-BL9OpVg8.woff": {
+    "file": "assets/inter-500-normal-BL9OpVg8.woff",
+    "src": "_inter-500-normal-BL9OpVg8.woff"
+  },
+  "_inter-500-normal-Cerq10X2.woff2": {
+    "file": "assets/inter-500-normal-Cerq10X2.woff2",
+    "src": "_inter-500-normal-Cerq10X2.woff2"
+  },
+  "_inter-600-normal-CiBQ2DWP.woff": {
+    "file": "assets/inter-600-normal-CiBQ2DWP.woff",
+    "src": "_inter-600-normal-CiBQ2DWP.woff"
+  },
+  "_inter-600-normal-LgqL8muc.woff2": {
+    "file": "assets/inter-600-normal-LgqL8muc.woff2",
+    "src": "_inter-600-normal-LgqL8muc.woff2"
+  },
+  "_inter-700-normal-BLAVimhd.woff": {
+    "file": "assets/inter-700-normal-BLAVimhd.woff",
+    "src": "_inter-700-normal-BLAVimhd.woff"
+  },
+  "_inter-700-normal-Yt3aPRUw.woff2": {
+    "file": "assets/inter-700-normal-Yt3aPRUw.woff2",
+    "src": "_inter-700-normal-Yt3aPRUw.woff2"
+  },
+  "_inter-800-normal-BYj_oED-.woff2": {
+    "file": "assets/inter-800-normal-BYj_oED-.woff2",
+    "src": "_inter-800-normal-BYj_oED-.woff2"
+  },
+  "_inter-800-normal-D1mf63XC.woff": {
+    "file": "assets/inter-800-normal-D1mf63XC.woff",
+    "src": "_inter-800-normal-D1mf63XC.woff"
+  },
+  "_inter-900-normal-D4nM5aha.woff2": {
+    "file": "assets/inter-900-normal-D4nM5aha.woff2",
+    "src": "_inter-900-normal-D4nM5aha.woff2"
+  },
+  "_inter-900-normal-EUCDUbiG.woff": {
+    "file": "assets/inter-900-normal-EUCDUbiG.woff",
+    "src": "_inter-900-normal-EUCDUbiG.woff"
+  },
+  "_poppins-400-normal-BOb3E3N0.woff": {
+    "file": "assets/poppins-400-normal-BOb3E3N0.woff",
+    "src": "_poppins-400-normal-BOb3E3N0.woff"
+  },
+  "_poppins-400-normal-cpxAROuN.woff2": {
+    "file": "assets/poppins-400-normal-cpxAROuN.woff2",
+    "src": "_poppins-400-normal-cpxAROuN.woff2"
+  },
+  "_poppins-500-normal-C8OXljZJ.woff2": {
+    "file": "assets/poppins-500-normal-C8OXljZJ.woff2",
+    "src": "_poppins-500-normal-C8OXljZJ.woff2"
+  },
+  "_poppins-500-normal-DGXqpDMm.woff": {
+    "file": "assets/poppins-500-normal-DGXqpDMm.woff",
+    "src": "_poppins-500-normal-DGXqpDMm.woff"
+  },
+  "_poppins-600-normal-BJdTmd5m.woff": {
+    "file": "assets/poppins-600-normal-BJdTmd5m.woff",
+    "src": "_poppins-600-normal-BJdTmd5m.woff"
+  },
+  "_poppins-600-normal-zEkxB9Mr.woff2": {
+    "file": "assets/poppins-600-normal-zEkxB9Mr.woff2",
+    "src": "_poppins-600-normal-zEkxB9Mr.woff2"
+  },
+  "_poppins-700-normal-BVuQR_eA.woff": {
+    "file": "assets/poppins-700-normal-BVuQR_eA.woff",
+    "src": "_poppins-700-normal-BVuQR_eA.woff"
+  },
+  "_poppins-700-normal-Qrb0O0WB.woff2": {
+    "file": "assets/poppins-700-normal-Qrb0O0WB.woff2",
+    "src": "_poppins-700-normal-Qrb0O0WB.woff2"
+  },
+  "_poppins-800-normal-Bd8-pIP1.woff2": {
+    "file": "assets/poppins-800-normal-Bd8-pIP1.woff2",
+    "src": "_poppins-800-normal-Bd8-pIP1.woff2"
+  },
+  "_poppins-800-normal-YoItoZZV.woff": {
+    "file": "assets/poppins-800-normal-YoItoZZV.woff",
+    "src": "_poppins-800-normal-YoItoZZV.woff"
+  },
+  "node_modules/@fortawesome/fontawesome-free/webfonts/fa-brands-400.woff2": {
+    "file": "assets/fa-brands-400-Bs6tcqqs.woff2",
+    "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-brands-400.woff2"
+  },
+  "node_modules/@fortawesome/fontawesome-free/webfonts/fa-regular-400.woff2": {
+    "file": "assets/fa-regular-400-DRN8N0d1.woff2",
+    "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-regular-400.woff2"
+  },
+  "node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-900.woff2": {
+    "file": "assets/fa-solid-900-IAB4Droh.woff2",
+    "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-900.woff2"
+  },
+  "node_modules/@fortawesome/fontawesome-free/webfonts/fa-v4compatibility.woff2": {
+    "file": "assets/fa-v4compatibility-CErXDOsT.woff2",
+    "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-v4compatibility.woff2"
+  },
+  "resources/css/app.css": {
+    "file": "assets/app-DH6Nc1nP.css",
+    "name": "app",
+    "names": [
+      "app.css"
+    ],
+    "src": "resources/css/app.css",
+    "isEntry": true
+  },
+  "resources/js/app.js": {
+    "file": "assets/app-CAmoVMDa.js",
+    "name": "app",
+    "src": "resources/js/app.js",
+    "isEntry": true,
+    "css": [
+      "assets/app-zXd8mtO7.css"
+    ],
+    "assets": [
+      "assets/fa-brands-400-Bs6tcqqs.woff2",
+      "assets/fa-regular-400-DRN8N0d1.woff2",
+      "assets/fa-solid-900-IAB4Droh.woff2",
+      "assets/fa-v4compatibility-CErXDOsT.woff2"
+    ]
+  }
+}

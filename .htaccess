@@ -1,0 +1,29 @@
+# Shared-hosting entry point.
+#
+# Hostinger and most cPanel hosts serve the repository root as the document
+# root, but Laravel expects requests to land in public/. This forwards them
+# there without moving files around, and blocks the paths that must never be
+# reachable over HTTP.
+#
+# On a VPS, set the vhost root to <app>/public instead and delete this file.
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Never serve the environment file, VCS metadata or dependency internals,
+    # whatever else the rules below do.
+    RewriteRule ^\.env - [F,L]
+    RewriteRule ^(\.git|\.github|storage|bootstrap/cache|vendor|node_modules|tests|database)/ - [F,L]
+    RewriteRule ^(composer\.(json|lock)|package(-lock)?\.json|artisan|deploy\.sh|phpstan\.neon|plan\.md)$ - [F,L]
+
+    # The uploads symlink and built assets are served straight from public/.
+    RewriteCond %{REQUEST_URI} !^/public/
+    RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>
+
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+</IfModule>
+
+# Directory listings stay off even if the host enables them globally.
+Options -Indexes
