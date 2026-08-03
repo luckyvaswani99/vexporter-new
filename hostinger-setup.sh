@@ -17,15 +17,15 @@ die()   { printf '\n\033[0;31m✗ %s\033[0m\n\n' "$1"; exit 1; }
 cd "$(dirname "$0")"
 
 # --- PHP ----------------------------------------------------------------------
-step "Finding a PHP 8.3+ binary"
+step "Finding a PHP 8.4+ binary"
 
 PHP=""
-for candidate in php8.4 php8.3 /usr/bin/php8.4 /usr/bin/php8.3 /opt/alt/php84/usr/bin/php /opt/alt/php83/usr/bin/php php; do
+for candidate in php8.4 /usr/bin/php8.4 /opt/alt/php84/usr/bin/php php; do
     if command -v "$candidate" >/dev/null 2>&1; then
         version="$("$candidate" -r 'echo PHP_VERSION;' 2>/dev/null || true)"
         major_minor="$("$candidate" -r 'echo PHP_MAJOR_VERSION * 100 + PHP_MINOR_VERSION;' 2>/dev/null || echo 0)"
 
-        if [ "${major_minor:-0}" -ge 803 ]; then
+        if [ "${major_minor:-0}" -ge 804 ]; then
             PHP="$candidate"
             ok "$candidate — PHP $version"
             break
@@ -33,7 +33,17 @@ for candidate in php8.4 php8.3 /usr/bin/php8.4 /usr/bin/php8.3 /opt/alt/php84/us
     fi
 done
 
-[ -n "$PHP" ] || die "No PHP 8.3+ found. Set the version in hPanel → Advanced → PHP Configuration, then re-run."
+[ -n "$PHP" ] || die "No PHP 8.4+ found. Set the version in hPanel → Advanced → PHP Configuration, then re-run."
+
+# On shared hosting the shell's default `php` is the system one and has nothing
+# to do with the version Apache serves the site with — that comes from hPanel.
+# Worth surfacing, but not worth blocking on: a stale shell PHP is normal.
+default_version="$(php -r 'echo PHP_MAJOR_VERSION * 100 + PHP_MINOR_VERSION;' 2>/dev/null || echo 0)"
+
+if [ "${default_version:-0}" -lt 804 ]; then
+    warn "Shell default 'php' is $(php -r 'echo PHP_VERSION;' 2>/dev/null || echo 'unknown') — using $PHP instead."
+    warn "Confirm the *website* is on 8.4 in hPanel → Advanced → PHP Configuration."
+fi
 
 step "Checking PHP extensions"
 missing=""
@@ -50,9 +60,14 @@ ok "all required extensions present"
 # --- Composer -----------------------------------------------------------------
 step "Locating Composer"
 
-if command -v composer >/dev/null 2>&1; then
-    COMPOSER="composer"
-    ok "system composer"
+# Always drive Composer with the PHP we picked. The `composer` on PATH has its
+# own shebang pointing at the default interpreter, which resolves the platform
+# requirements against the wrong version.
+composer_bin="$(command -v composer 2>/dev/null || true)"
+
+if [ -n "$composer_bin" ] && "$PHP" "$composer_bin" --version >/dev/null 2>&1; then
+    COMPOSER="$PHP $composer_bin"
+    ok "system composer, running on $("$PHP" -r 'echo PHP_VERSION;')"
 elif [ -f composer.phar ]; then
     COMPOSER="$PHP composer.phar"
     ok "local composer.phar"
@@ -156,7 +171,7 @@ cat <<EOF
 Two things are still yours to do:
 
   1. Cron — hPanel → Advanced → Cron Jobs, every minute:
-       cd ~/public_html && $PHP artisan schedule:run >/dev/null 2>&1
+       cd $(pwd) && $PHP artisan schedule:run >/dev/null 2>&1
 
      This drives the queue as well as the scheduled jobs. Without it,
      notifications, webhooks and PDFs never run.
