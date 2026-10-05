@@ -3,6 +3,7 @@
 namespace App\Filament\Vendor\Resources\Rfqs\Tables;
 
 use App\Actions\Rfq\SubmitQuote;
+use App\Filament\Support\MoneyInput;
 use App\Models\Rfq;
 use App\Models\Vendor;
 use App\Support\Countries;
@@ -128,7 +129,7 @@ class RfqsTable
                     ])
                     ->schema([
                         Section::make('Line items')
-                            ->description('Prices are in cents — 850 = $8.50.')
+                            ->description('Enter prices normally — 8.50 means 8.50 in the quote currency.')
                             ->schema([
                                 Repeater::make('items')
                                     ->hiddenLabel()
@@ -154,9 +155,8 @@ class RfqsTable
                                             ->label('Unit')
                                             ->required(),
 
-                                        TextInput::make('unit_price')
-                                            ->label('Unit price (cents)')
-                                            ->numeric()
+                                        MoneyInput::make('unit_price')
+                                            ->label('Unit price')
                                             ->required()
                                             ->columnSpan(3),
                                     ]),
@@ -165,14 +165,12 @@ class RfqsTable
                         Section::make('Terms')
                             ->columns(3)
                             ->schema([
-                                TextInput::make('shipping')
-                                    ->label('Freight (cents)')
-                                    ->numeric()
+                                MoneyInput::make('shipping')
+                                    ->label('Freight')
                                     ->default(0),
 
-                                TextInput::make('tax')
-                                    ->label('Duties / tax (cents)')
-                                    ->numeric()
+                                MoneyInput::make('tax')
+                                    ->label('Duties / tax')
                                     ->default(0),
 
                                 Select::make('currency')

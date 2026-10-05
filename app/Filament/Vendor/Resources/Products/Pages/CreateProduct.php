@@ -3,6 +3,7 @@
 namespace App\Filament\Vendor\Resources\Products\Pages;
 
 use App\Filament\Support\HandlesProductImages;
+use App\Filament\Support\HasAiAutofill;
 use App\Filament\Vendor\Resources\Products\ProductResource;
 use App\Models\Category;
 use App\Models\Product;
@@ -13,6 +14,12 @@ use Illuminate\Support\Str;
 class CreateProduct extends CreateRecord
 {
     use HandlesProductImages;
+    use HasAiAutofill;
+
+    protected function getHeaderActions(): array
+    {
+        return $this->aiHeaderActions();
+    }
 
     protected static string $resource = ProductResource::class;
 

@@ -49,6 +49,18 @@ return [
         'webhook_secret' => env('RAZORPAY_WEBHOOK_SECRET', 'whsec_dummy'),
     ],
 
+    /*
+    | AI listing assistant (Groq). Leave GROQ_API_KEY empty to hide the feature.
+    */
+    'groq' => [
+        'key' => env('GROQ_API_KEY'),
+        'base_url' => env('GROQ_BASE_URL', 'https://api.groq.com/openai/v1'),
+        'model' => env('GROQ_MODEL', 'openai/gpt-oss-120b'),
+        'fallback_model' => env('GROQ_FALLBACK_MODEL', 'llama-3.3-70b-versatile'),
+        'temperature' => (float) env('GROQ_TEMPERATURE', 0.2),
+        'timeout' => (int) env('GROQ_TIMEOUT', 60),
+    ],
+
     'stripe' => [
         'key' => env('STRIPE_KEY', 'pk_test_dummy'),
         'secret' => env('STRIPE_SECRET', 'sk_test_dummy'),

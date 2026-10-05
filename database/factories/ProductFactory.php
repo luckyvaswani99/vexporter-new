@@ -35,7 +35,7 @@ class ProductFactory extends Factory
             'base_price' => $price,
             'compare_at_price' => fake()->boolean(35) ? (int) ($price * 1.2) : null,
             'currency' => 'USD',
-            'stock_qty' => fake()->numberBetween(0, 5000),
+            'stock_qty' => fake()->numberBetween(500, 5000),
             'lead_time_days' => fake()->numberBetween(3, 45),
             'weight_kg' => fake()->randomFloat(2, 0.1, 500),
             'is_active' => true,

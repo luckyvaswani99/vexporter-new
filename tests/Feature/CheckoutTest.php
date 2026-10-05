@@ -202,3 +202,40 @@ it('shows the buyer their own RFQ only', function () {
     $this->actingAs($buyer)->get(route('account.rfqs.show', $rfq))->assertOk()->assertSee('Private request');
     $this->actingAs($stranger)->get(route('account.rfqs.show', $rfq))->assertForbidden();
 });
+
+it('takes stock at checkout and re-prices from the live catalogue', function () {
+    Notification::fake();
+
+    $product = Product::factory()->create(['base_price' => 1_000, 'moq' => 1, 'stock_qty' => 50]);
+
+    $this->actingAs(User::factory()->create());
+    $this->postJson(route('cart.items.store'), ['product_id' => $product->id, 'qty' => 10]);
+
+    // The seller raises the price after the item went into the cart.
+    $product->update(['base_price' => 1_500]);
+
+    $this->post(route('checkout.store'), checkoutPayload());
+
+    expect(Order::firstOrFail()->subtotal)->toBe(15_000)
+        ->and($product->fresh()->stock_qty)->toBe(40);
+});
+
+it('refuses to add more than the stock on hand', function () {
+    $product = Product::factory()->create(['moq' => 1, 'stock_qty' => 5]);
+
+    $this->postJson(route('cart.items.store'), ['product_id' => $product->id, 'qty' => 6])
+        ->assertStatus(422);
+});
+
+it('blocks checkout when stock ran out after the item was carted', function () {
+    $product = Product::factory()->create(['moq' => 1, 'stock_qty' => 10]);
+
+    $this->actingAs(User::factory()->create());
+    $this->postJson(route('cart.items.store'), ['product_id' => $product->id, 'qty' => 8]);
+
+    $product->update(['stock_qty' => 3]);
+
+    $this->post(route('checkout.store'), checkoutPayload())->assertSessionHasErrors('cart');
+
+    expect(Order::count())->toBe(0)->and($product->fresh()->stock_qty)->toBe(3);
+});

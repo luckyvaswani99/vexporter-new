@@ -61,6 +61,16 @@ class CartService
         ]);
 
         $item->qty = $this->normaliseQty($product, ($item->exists ? $item->qty : 0) + $qty);
+
+        $available = (int) ($variant ?? $product)->stock_qty;
+
+        if ($item->qty > $available) {
+            throw ValidationException::withMessages([
+                'product' => $available > 0
+                    ? "Only {$available} in stock right now."
+                    : 'This item is out of stock — please request a quote instead.',
+            ]);
+        }
         $item->vendor_id = $product->vendor_id;
         $item->unit = $product->unit;
         $item->unit_price = $product->priceForQty($item->qty, $variant);

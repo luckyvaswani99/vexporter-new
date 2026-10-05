@@ -3,6 +3,7 @@
 namespace App\Filament\Vendor\Resources\Products\Pages;
 
 use App\Filament\Support\HandlesProductImages;
+use App\Filament\Support\HasAiAutofill;
 use App\Filament\Vendor\Resources\Products\ProductResource;
 use App\Models\Category;
 use Filament\Actions\DeleteAction;
@@ -13,6 +14,7 @@ use Filament\Resources\Pages\EditRecord;
 class EditProduct extends EditRecord
 {
     use HandlesProductImages;
+    use HasAiAutofill;
 
     protected static string $resource = ProductResource::class;
 
@@ -31,6 +33,7 @@ class EditProduct extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
+            ...$this->aiHeaderActions(),
             DeleteAction::make(),
             ForceDeleteAction::make(),
             RestoreAction::make(),

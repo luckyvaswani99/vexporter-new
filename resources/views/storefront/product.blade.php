@@ -271,6 +271,41 @@
                     </div>
 
                     <div x-show="tab === 'specs'" x-cloak>
+                        @php
+                            $pharmaSpecs = array_filter([
+                                'Generic name' => $product->generic_name,
+                                'Brand' => $product->brand_name,
+                                'Strength' => $product->strength,
+                                'Dosage form' => $product->dosage_form,
+                                'Pack size' => $product->pack_size,
+                                'Active ingredients' => $product->ingredients ? implode(', ', $product->ingredients) : null,
+                                'Manufacturer' => $product->manufacturer,
+                                'Country of origin' => \App\Support\Countries::name($product->country_of_origin),
+                                'Drug schedule' => $product->schedule_class,
+                                'Pharmacopoeia' => $product->pharmacopoeia_standard,
+                                'CAS number' => $product->cas_number,
+                                'HS code' => $product->hsn_code,
+                                'Storage' => $product->storage_conditions,
+                                'Shelf life' => $product->shelf_life_months ? $product->shelf_life_months.' months' : null,
+                                'Handling' => collect([
+                                    $product->is_cold_chain ? 'Cold chain (2–8°C)' : null,
+                                    $product->humidity_sensitive ? 'Keep dry' : null,
+                                    $product->light_sensitive ? 'Protect from light' : null,
+                                ])->filter()->implode(' · ') ?: null,
+                            ], fn ($v) => filled($v));
+                        @endphp
+
+                        @if ($pharmaSpecs)
+                            <dl class="grid sm:grid-cols-2 gap-x-10 gap-y-3 {{ $product->attributeValues->isNotEmpty() ? 'mb-6' : '' }}">
+                                @foreach ($pharmaSpecs as $label => $value)
+                                    <div class="flex justify-between gap-4 border-b border-gray-50 py-2">
+                                        <dt class="text-gray-500 text-sm shrink-0">{{ $label }}</dt>
+                                        <dd class="font-medium text-brand-dark text-sm text-right">{{ $value }}</dd>
+                                    </div>
+                                @endforeach
+                            </dl>
+                        @endif
+
                         @if ($product->attributeValues->isNotEmpty())
                             <dl class="grid sm:grid-cols-2 gap-x-10 gap-y-3">
                                 @foreach ($product->attributeValues as $value)
@@ -280,7 +315,7 @@
                                     </div>
                                 @endforeach
                             </dl>
-                        @else
+                        @elseif (! $pharmaSpecs)
                             <p class="text-gray-500">The vendor has not published detailed specifications for this item yet.</p>
                         @endif
                     </div>

@@ -4,6 +4,8 @@ namespace App\Filament\Resources\Products\Schemas;
 
 use App\Filament\Support\MoneyInput;
 use App\Filament\Support\ProductImages;
+use App\Filament\Support\ProductSections;
+use App\Models\Category;
 use App\Models\Product;
 use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Repeater;
@@ -38,7 +40,6 @@ class ProductForm
                             }),
 
                         TextInput::make('slug')
-                            ->required()
                             ->helperText('Filled in from the name — change it only if you need a specific web address.')
                             ->unique(ignoreRecord: true),
 
@@ -68,6 +69,8 @@ class ProductForm
                             ->relationship('category', 'name')
                             ->searchable()
                             ->preload()
+                            ->live()
+                            ->afterStateUpdated(fn ($state, callable $set) => $set('vertical_id', Category::find($state)?->vertical_id))
                             ->required(),
 
                         RichEditor::make('short_description')
@@ -85,6 +88,8 @@ class ProductForm
                             ])
                             ->columnSpanFull(),
                     ]),
+
+                ProductSections::pharma(),
 
                 Section::make('Options')
                     ->description('Each option can carry its own SKU, price and stock. Leave a price blank to use the base price.')
@@ -163,6 +168,8 @@ class ProductForm
                         TextInput::make('lead_time_days')->label('Lead time (days)')->numeric(),
                         TextInput::make('weight_kg')->numeric(),
                     ]),
+
+                ProductSections::seo(),
 
                 Section::make('Compliance & visibility')
                     ->columns(3)

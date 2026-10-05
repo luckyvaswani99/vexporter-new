@@ -135,11 +135,11 @@ Route::middleware('auth')->group(function (): void {
 
 Route::prefix('x')->group(function (): void {
     Route::get('cart', [CartAjaxController::class, 'show'])->name('cart.show');
-    Route::post('cart/items', [CartAjaxController::class, 'store'])->name('cart.items.store');
+    Route::post('cart/items', [CartAjaxController::class, 'store'])->middleware('throttle:60,1')->name('cart.items.store');
     Route::patch('cart/items/{item}', [CartAjaxController::class, 'update'])->name('cart.items.update');
     Route::delete('cart/items/{item}', [CartAjaxController::class, 'destroy'])->name('cart.items.destroy');
 
-    Route::post('wishlist/toggle', [WishlistController::class, 'toggle'])->name('wishlist.toggle');
+    Route::post('wishlist/toggle', [WishlistController::class, 'toggle'])->middleware('throttle:60,1')->name('wishlist.toggle');
     Route::get('search/suggest', SuggestController::class)->middleware('throttle:60,1')->name('search.suggest');
 
     Route::post('newsletter', NewsletterController::class)

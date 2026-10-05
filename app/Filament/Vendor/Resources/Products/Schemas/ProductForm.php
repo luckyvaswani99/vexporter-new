@@ -4,6 +4,7 @@ namespace App\Filament\Vendor\Resources\Products\Schemas;
 
 use App\Filament\Support\MoneyInput;
 use App\Filament\Support\ProductImages;
+use App\Filament\Support\ProductSections;
 use App\Models\Category;
 use App\Models\Product;
 use Filament\Forms\Components\Repeater;
@@ -44,6 +45,7 @@ class ProductForm
                             ->label('Category')
                             ->options(fn () => Category::query()->orderBy('name')->pluck('name', 'id'))
                             ->searchable()
+                            ->live()
                             ->required(),
 
                         Textarea::make('short_description')
@@ -53,6 +55,8 @@ class ProductForm
                             ->maxLength(300)
                             ->columnSpanFull(),
                     ]),
+
+                ProductSections::pharma(),
 
                 Section::make('2. Price & stock')
                     ->columns(3)
@@ -155,6 +159,8 @@ class ProductForm
                                 TextInput::make('order_increment')->label('Order in multiples of')->numeric()->default(1),
                                 MoneyInput::make('compare_at_price')->label('Old price (struck through)'),
                             ]),
+
+                        ProductSections::seo(),
 
                         Section::make('Licences & certificates')
                             ->schema([

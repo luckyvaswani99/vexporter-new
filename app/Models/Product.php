@@ -228,6 +228,10 @@ class Product extends Model
             'is_featured' => 'boolean',
             'is_bestseller' => 'boolean',
             'requires_license' => 'boolean',
+            'is_cold_chain' => 'boolean',
+            'humidity_sensitive' => 'boolean',
+            'light_sensitive' => 'boolean',
+            'ingredients' => 'array',
             'rating_cache' => 'decimal:2',
             'published_at' => 'datetime',
         ];
