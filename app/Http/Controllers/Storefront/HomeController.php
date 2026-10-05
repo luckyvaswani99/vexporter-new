@@ -41,7 +41,7 @@ class HomeController extends Controller
         return Product::visible()
             ->featured()
             ->whereRelation('vertical', 'slug', $verticalSlug)
-            ->with(['vendor', 'category', 'certificates'])
+            ->with(['vendor', 'category', 'certificates', 'images'])
             ->orderByDesc('rating_cache')
             ->take($this->limit($verticalSlug))
             ->get();

@@ -16,7 +16,7 @@ class SeoService
         $metaTitle = $title ? "{$title} | {$siteName}" : $defaultTitle;
         $metaDescription = $description ? (string) str($description)->stripTags()->limit(160) : $defaultDescription;
         $metaUrl = $url ?? url()->current();
-        $metaImage = $image ?? asset('images/logo.svg');
+        $metaImage = $image ?? brand_logo_url();
 
         return [
             'title' => $metaTitle,

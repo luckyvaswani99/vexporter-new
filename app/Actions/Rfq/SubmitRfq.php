@@ -41,6 +41,7 @@ class SubmitRfq
                 'destination_country' => strtoupper($data['destination_country']),
                 'incoterm' => $data['incoterm'],
                 'delivery_by' => $data['delivery_by'] ?? null,
+                'attachments' => $data['attachments'] ?? null,
                 'expires_at' => now()->addDays(14),
             ]);
 

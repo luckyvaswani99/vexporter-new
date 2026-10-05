@@ -74,6 +74,7 @@ class CartService
             'icon' => $product->icon,
             'icon_color' => $product->icon_color,
             'image_gradient' => $product->image_gradient,
+            'image' => $product->primary_image,
         ];
         $item->save();
 

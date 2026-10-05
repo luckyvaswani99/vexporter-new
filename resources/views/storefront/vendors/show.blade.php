@@ -1,14 +1,16 @@
 <x-layouts.storefront :title="$vendor->name . ' — VEXPORTER vendor'" :description="$vendor->about">
     <section class="gradient-hero relative overflow-hidden">
+        @if ($vendor->banner_url)
+            <img src="{{ $vendor->banner_url }}" alt="" class="absolute inset-0 w-full h-full object-cover opacity-30" aria-hidden="true">
+        @endif
+
         <div class="absolute inset-0 opacity-10" aria-hidden="true">
             <div class="absolute top-10 right-10 w-72 h-72 bg-brand-red rounded-full blur-3xl"></div>
         </div>
 
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 relative z-10">
             <div class="flex flex-wrap items-center gap-6 text-white">
-                <div class="w-20 h-20 rounded-2xl bg-gradient-to-br {{ $vendor->avatar_gradient }} flex items-center justify-center text-3xl font-bold shadow-xl">
-                    {{ $vendor->initial }}
-                </div>
+                <x-vendor.avatar :vendor="$vendor" class="w-20 h-20 rounded-2xl text-3xl shadow-xl" />
 
                 <div class="flex-1 min-w-0">
                     <div class="flex flex-wrap items-center gap-3 mb-1">

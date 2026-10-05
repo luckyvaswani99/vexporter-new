@@ -23,9 +23,7 @@
                             <div class="bg-white rounded-2xl border border-gray-100 overflow-hidden">
                                 <div class="flex items-center justify-between px-6 py-4 border-b border-gray-50 bg-brand-light/50">
                                     <a href="{{ route('vendors.show', $group['vendor']) }}" class="flex items-center gap-3 font-semibold text-brand-dark hover:text-brand-red transition">
-                                        <span class="w-8 h-8 rounded-lg bg-gradient-to-br {{ $group['vendor']->avatar_gradient }} text-white flex items-center justify-center text-xs font-bold">
-                                            {{ $group['vendor']->initial }}
-                                        </span>
+                                        <x-vendor.avatar :vendor="$group['vendor']" class="w-8 h-8 rounded-lg text-xs" />
                                         {{ $group['vendor']->name }}
                                     </a>
 
@@ -36,8 +34,12 @@
 
                                 @foreach ($group['items'] as $item)
                                     <div class="flex flex-wrap items-center gap-4 px-6 py-5 border-b border-gray-50 last:border-0" x-data="{ qty: {{ $item->qty }}, busy: false }">
-                                        <div class="w-16 h-16 rounded-xl bg-gradient-to-br {{ $item->snapshot['image_gradient'] ?? 'from-gray-50 to-gray-100' }} flex items-center justify-center shrink-0">
-                                            <i class="fas {{ $item->snapshot['icon'] ?? 'fa-box' }} text-2xl {{ $item->snapshot['icon_color'] ?? 'text-gray-300' }}"></i>
+                                        <div class="w-16 h-16 rounded-xl bg-gradient-to-br {{ $item->snapshot['image_gradient'] ?? 'from-gray-50 to-gray-100' }} flex items-center justify-center shrink-0 overflow-hidden">
+                                            @if (! empty($item->snapshot['image']))
+                                                <img src="{{ asset('storage/'.$item->snapshot['image']) }}" alt="" class="w-full h-full object-cover">
+                                            @else
+                                                <i class="fas {{ $item->snapshot['icon'] ?? 'fa-box' }} text-2xl {{ $item->snapshot['icon_color'] ?? 'text-gray-300' }}"></i>
+                                            @endif
                                         </div>
 
                                         <div class="flex-1 min-w-[12rem]">

@@ -25,6 +25,8 @@
 
                 <p class="text-gray-600 mb-6">{{ $rfq->description }}</p>
 
+                <x-rfq.attachments :rfq="$rfq" />
+
                 <dl class="grid sm:grid-cols-4 gap-5 text-sm">
                     <div>
                         <dt class="text-gray-400 text-xs uppercase tracking-wide mb-1">Quantity</dt>

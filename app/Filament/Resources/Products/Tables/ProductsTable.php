@@ -12,11 +12,13 @@ use Filament\Actions\RestoreBulkAction;
 use Filament\Forms\Components\Textarea;
 use Filament\Notifications\Notification;
 use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 
 class ProductsTable
@@ -24,8 +26,15 @@ class ProductsTable
     public static function configure(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(fn (Builder $query) => $query->with('images'))
             ->defaultSort('created_at', 'desc')
             ->columns([
+                ImageColumn::make('primary_image')
+                    ->label('')
+                    ->disk('public')
+                    ->square()
+                    ->imageSize(48),
+
                 TextColumn::make('name')
                     ->description(fn (Product $record) => $record->sku)
                     ->searchable()

@@ -93,7 +93,7 @@ it('falls back to the dark logo when no light variant is uploaded', function () 
     app(SiteSettings::class)->put(['brand' => ['logo_dark' => 'brand/logo.svg']]);
 
     // Header and footer both resolve to the one file.
-    expect(substr_count($this->get('/')->getContent(), '/storage/brand/logo.svg'))->toBe(2);
+    expect(preg_match_all('~<img[^>]+brand/logo.svg~', $this->get('/')->getContent()))->toBe(2);
 });
 
 it('serves the uploaded favicon', function () {

@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources\Products\Schemas;
 
+use App\Filament\Support\MoneyInput;
+use App\Filament\Support\ProductImages;
 use App\Models\Product;
 use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Repeater;
@@ -12,6 +14,7 @@ use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
+use Illuminate\Support\Str;
 
 class ProductForm
 {
@@ -22,13 +25,21 @@ class ProductForm
                 Section::make('Listing')
                     ->columns(2)
                     ->schema([
+                        ProductImages::field(),
+
                         TextInput::make('name')
                             ->required()
                             ->maxLength(255)
-                            ->live(onBlur: true),
+                            ->live(onBlur: true)
+                            ->afterStateUpdated(function (?string $state, callable $set, ?Product $record): void {
+                                if (! $record) {
+                                    $set('slug', Str::slug((string) $state));
+                                }
+                            }),
 
                         TextInput::make('slug')
                             ->required()
+                            ->helperText('Filled in from the name — change it only if you need a specific web address.')
                             ->unique(ignoreRecord: true),
 
                         Select::make('vendor_id')
@@ -86,7 +97,7 @@ class ProductForm
                             ->schema([
                                 TextInput::make('name')->label('Option')->required()->placeholder('540W'),
                                 TextInput::make('sku')->label('SKU'),
-                                TextInput::make('price')->label('Price (cents)')->numeric()->placeholder('Base price'),
+                                MoneyInput::make('price')->label('Price')->placeholder('Base price'),
                                 TextInput::make('stock_qty')->label('Stock')->numeric()->default(0),
                                 Toggle::make('is_default')->label('Pre-selected on the product page'),
                             ])
@@ -98,17 +109,15 @@ class ProductForm
                 Section::make('Pricing & MOQ')
                     ->columns(3)
                     ->schema([
-                        TextInput::make('base_price')
+                        MoneyInput::make('base_price')
                             ->label('Base price')
-                            ->numeric()
                             ->required()
                             ->helperText(fn (Get $get): string => $get('type') === Product::TYPE_VARIABLE
-                                ? 'Cents. Used for any option without its own price.'
-                                : 'Stored in cents — 850 = $8.50.'),
+                                ? 'Used for any option without its own price.'
+                                : 'Enter it normally, e.g. 8.50.'),
 
-                        TextInput::make('compare_at_price')
-                            ->label('Compare at')
-                            ->numeric(),
+                        MoneyInput::make('compare_at_price')
+                            ->label('Compare at'),
 
                         Select::make('currency')
                             ->options(['USD' => 'USD', 'INR' => 'INR', 'EUR' => 'EUR', 'GBP' => 'GBP', 'AED' => 'AED'])
@@ -139,7 +148,7 @@ class ProductForm
                             ->schema([
                                 TextInput::make('min_qty')->numeric()->required(),
                                 TextInput::make('max_qty')->numeric()->placeholder('No limit'),
-                                TextInput::make('price')->numeric()->required()->helperText('In cents'),
+                                MoneyInput::make('price')->required(),
                             ])
                             ->defaultItems(0)
                             ->collapsed(),

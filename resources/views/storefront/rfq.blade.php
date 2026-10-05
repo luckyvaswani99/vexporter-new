@@ -16,15 +16,19 @@
                 </div>
             @endif
 
-            <form method="POST" action="{{ route('rfq.store') }}" class="bg-white rounded-3xl border border-gray-100 p-6 sm:p-8 space-y-5">
+            <form method="POST" action="{{ route('rfq.store') }}" enctype="multipart/form-data" class="bg-white rounded-3xl border border-gray-100 p-6 sm:p-8 space-y-5">
                 @csrf
 
                 @if ($product)
                     <input type="hidden" name="product_id" value="{{ $product->id }}">
 
                     <div class="flex items-center gap-4 rounded-2xl bg-brand-light p-4">
-                        <div class="w-14 h-14 rounded-xl bg-gradient-to-br {{ $product->image_gradient }} flex items-center justify-center shrink-0">
-                            <i class="fas {{ $product->icon }} text-2xl {{ $product->icon_color }}"></i>
+                        <div class="w-14 h-14 rounded-xl bg-gradient-to-br {{ $product->image_gradient }} flex items-center justify-center shrink-0 overflow-hidden">
+                            @if ($product->primary_image)
+                                <img src="{{ asset('storage/'.$product->primary_image) }}" alt="" class="w-full h-full object-cover">
+                            @else
+                                <i class="fas {{ $product->icon }} text-2xl {{ $product->icon_color }}"></i>
+                            @endif
                         </div>
                         <div>
                             <p class="font-semibold text-brand-dark">{{ $product->name }}</p>
@@ -90,6 +94,24 @@
                     </x-ui.field>
 
                     <x-ui.field name="delivery_by" label="Needed by" type="date" hint="Optional" />
+                </div>
+
+                <div x-data="{ names: [] }" class="space-y-1.5">
+                    <label for="attachments" class="block text-sm font-medium text-brand-dark">
+                        Photos or specification sheets <span class="text-gray-400 font-normal">(optional)</span>
+                    </label>
+                    <label for="attachments" class="flex flex-col items-center justify-center gap-1 rounded-xl border-2 border-dashed border-gray-200 bg-gray-50 px-4 py-6 text-center cursor-pointer hover:border-brand-red transition">
+                        <i class="fas fa-cloud-arrow-up text-2xl text-gray-300"></i>
+                        <span class="text-sm text-gray-600" x-show="! names.length">Click to add images or PDFs — up to 5 files, 5 MB each</span>
+                        <span class="text-sm font-medium text-brand-dark" x-show="names.length" x-text="names.join(', ')"></span>
+                    </label>
+                    <input
+                        id="attachments" name="attachments[]" type="file" multiple class="sr-only"
+                        accept="image/jpeg,image/png,image/webp,application/pdf"
+                        @change="names = Array.from($event.target.files).map(f => f.name)"
+                    >
+                    @error('attachments') <p class="text-xs text-brand-red">{{ $message }}</p> @enderror
+                    @error('attachments.*') <p class="text-xs text-brand-red">{{ $message }}</p> @enderror
                 </div>
 
                 <x-ui.button type="submit" size="lg" class="w-full">

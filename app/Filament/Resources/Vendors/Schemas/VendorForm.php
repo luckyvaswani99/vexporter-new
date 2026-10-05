@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Vendors\Schemas;
 use App\Models\Product;
 use App\Models\Vendor;
 use App\Support\Countries;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -40,6 +41,24 @@ class VendorForm
                             ->searchable()
                             ->preload()
                             ->required(),
+
+                        FileUpload::make('logo')
+                            ->label('Store logo')
+                            ->image()
+                            ->imageEditor()
+                            ->disk('public')
+                            ->directory('vendors/logos')
+                            ->visibility('public')
+                            ->maxSize(2048),
+
+                        FileUpload::make('banner')
+                            ->label('Store banner')
+                            ->image()
+                            ->imageEditor()
+                            ->disk('public')
+                            ->directory('vendors/banners')
+                            ->visibility('public')
+                            ->maxSize(4096),
 
                         Textarea::make('about')
                             ->rows(3)
