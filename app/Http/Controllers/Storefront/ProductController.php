@@ -21,6 +21,7 @@ class ProductController extends Controller
             'certificates',
             'documents',
             'tierPrices',
+            'images',
             'variants',
             'attributeValues.attribute',
             'reviews' => fn ($query) => $query->approved()->with('user')->latest()->take(5),
@@ -36,14 +37,14 @@ class ProductController extends Controller
             'related' => Product::visible()
                 ->where('category_id', $product->category_id)
                 ->whereKeyNot($product->id)
-                ->with(['vendor', 'category', 'certificates'])
+                ->with(['vendor', 'category', 'certificates', 'images'])
                 ->orderByDesc('rating_cache')
                 ->take(4)
                 ->get(),
             'fromVendor' => Product::visible()
                 ->where('vendor_id', $product->vendor_id)
                 ->whereKeyNot($product->id)
-                ->with(['vendor', 'category', 'certificates'])
+                ->with(['vendor', 'category', 'certificates', 'images'])
                 ->take(4)
                 ->get(),
         ]);

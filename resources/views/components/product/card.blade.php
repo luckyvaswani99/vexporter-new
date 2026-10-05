@@ -62,6 +62,11 @@
             <a href="{{ route('products.show', $product->slug) }}" class="hover:text-brand-red transition">{{ $product->name }}</a>
         </h3>
 
+        @php($molecule = collect([$product->generic_name ?? null, $product->strength ?? null, $product->dosage_form ?? null])->filter()->implode(' · '))
+        @if ($molecule)
+            <p class="text-xs text-gray-500 -mt-1 mb-2 line-clamp-1">{{ $molecule }}</p>
+        @endif
+
         <x-product.rating :rating="$product->rating" class="mb-3" />
 
         <x-product.price

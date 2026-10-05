@@ -9,6 +9,7 @@
                 '@type' => 'Product',
                 'name' => $product->name,
                 'sku' => $product->sku,
+                'image' => $product->images->map(fn ($image) => asset('storage/'.$image->path))->all() ?: null,
                 'description' => \App\Support\Html::toText($product->short_description, 300),
                 'brand' => ['@type' => 'Organization', 'name' => $product->vendor->name],
                 'aggregateRating' => $product->reviews_count > 0 ? [
@@ -42,10 +43,10 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid lg:grid-cols-2 gap-12">
                 {{-- Gallery --}}
-                <div>
+                <div x-data="{ active: {{ Js::from($product->images->isNotEmpty() ? asset('storage/'.$product->images->first()->path) : null) }} }">
                     <div class="rounded-3xl bg-gradient-to-br {{ $product->image_gradient ?? 'from-gray-50 to-gray-100' }} h-[26rem] flex items-center justify-center relative overflow-hidden">
-                        @if ($product->primary_image)
-                            <img src="{{ asset('storage/'.$product->primary_image) }}" alt="{{ $product->name }}" class="w-full h-full object-cover">
+                        @if ($product->images->isNotEmpty())
+                            <img :src="active" src="{{ asset('storage/'.$product->images->first()->path) }}" alt="{{ $product->name }}" class="w-full h-full object-cover">
                         @else
                             <i class="fas {{ $product->icon ?? 'fa-box' }} text-9xl {{ $product->icon_color ?? 'text-gray-200' }}"></i>
                         @endif
@@ -54,6 +55,22 @@
                             <x-product.badge :label="$product->badge" :tone="$product->badge_tone ?? 'red'" class="absolute top-5 left-5" />
                         @endif
                     </div>
+
+                    @if ($product->images->count() > 1)
+                        <div class="flex gap-3 mt-4 overflow-x-auto pb-1">
+                            @foreach ($product->images as $image)
+                                <button
+                                    type="button"
+                                    @click="active = {{ Js::from(asset('storage/'.$image->path)) }}"
+                                    class="w-20 h-20 shrink-0 rounded-xl overflow-hidden border-2 transition"
+                                    :class="active === {{ Js::from(asset('storage/'.$image->path)) }} ? 'border-brand-red' : 'border-gray-100 hover:border-gray-300'"
+                                    aria-label="Show photo {{ $loop->iteration }}"
+                                >
+                                    <img src="{{ asset('storage/'.$image->path) }}" alt="" class="w-full h-full object-cover" loading="lazy">
+                                </button>
+                            @endforeach
+                        </div>
+                    @endif
 
                     @if ($product->certificates->isNotEmpty())
                         <div class="flex flex-wrap gap-2 mt-4">
@@ -254,6 +271,41 @@
                     </div>
 
                     <div x-show="tab === 'specs'" x-cloak>
+                        @php
+                            $pharmaSpecs = array_filter([
+                                'Generic name' => $product->generic_name,
+                                'Brand' => $product->brand_name,
+                                'Strength' => $product->strength,
+                                'Dosage form' => $product->dosage_form,
+                                'Pack size' => $product->pack_size,
+                                'Active ingredients' => $product->ingredients ? implode(', ', $product->ingredients) : null,
+                                'Manufacturer' => $product->manufacturer,
+                                'Country of origin' => \App\Support\Countries::name($product->country_of_origin),
+                                'Drug schedule' => $product->schedule_class,
+                                'Pharmacopoeia' => $product->pharmacopoeia_standard,
+                                'CAS number' => $product->cas_number,
+                                'HS code' => $product->hsn_code,
+                                'Storage' => $product->storage_conditions,
+                                'Shelf life' => $product->shelf_life_months ? $product->shelf_life_months.' months' : null,
+                                'Handling' => collect([
+                                    $product->is_cold_chain ? 'Cold chain (2–8°C)' : null,
+                                    $product->humidity_sensitive ? 'Keep dry' : null,
+                                    $product->light_sensitive ? 'Protect from light' : null,
+                                ])->filter()->implode(' · ') ?: null,
+                            ], fn ($v) => filled($v));
+                        @endphp
+
+                        @if ($pharmaSpecs)
+                            <dl class="grid sm:grid-cols-2 gap-x-10 gap-y-3 {{ $product->attributeValues->isNotEmpty() ? 'mb-6' : '' }}">
+                                @foreach ($pharmaSpecs as $label => $value)
+                                    <div class="flex justify-between gap-4 border-b border-gray-50 py-2">
+                                        <dt class="text-gray-500 text-sm shrink-0">{{ $label }}</dt>
+                                        <dd class="font-medium text-brand-dark text-sm text-right">{{ $value }}</dd>
+                                    </div>
+                                @endforeach
+                            </dl>
+                        @endif
+
                         @if ($product->attributeValues->isNotEmpty())
                             <dl class="grid sm:grid-cols-2 gap-x-10 gap-y-3">
                                 @foreach ($product->attributeValues as $value)
@@ -263,7 +315,7 @@
                                     </div>
                                 @endforeach
                             </dl>
-                        @else
+                        @elseif (! $pharmaSpecs)
                             <p class="text-gray-500">The vendor has not published detailed specifications for this item yet.</p>
                         @endif
                     </div>

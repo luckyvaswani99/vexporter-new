@@ -19,11 +19,15 @@
 <meta property="og:title" content="{{ $seo['og']['title'] }}">
 <meta property="og:description" content="{{ $seo['og']['description'] }}">
 <meta property="og:url" content="{{ $seo['og']['url'] }}">
+@if ($seo['og']['image'])
 <meta property="og:image" content="{{ $seo['og']['image'] }}">
+@endif
 <meta property="og:type" content="{{ $seo['og']['type'] }}">
 
 {{-- Twitter Cards --}}
 <meta name="twitter:card" content="{{ $seo['twitter']['card'] }}">
 <meta name="twitter:title" content="{{ $seo['twitter']['title'] }}">
 <meta name="twitter:description" content="{{ $seo['twitter']['description'] }}">
+@if ($seo['twitter']['image'])
 <meta name="twitter:image" content="{{ $seo['twitter']['image'] }}">
+@endif

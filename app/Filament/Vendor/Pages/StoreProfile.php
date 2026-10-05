@@ -2,7 +2,9 @@
 
 namespace App\Filament\Vendor\Pages;
 
+use App\Filament\Support\MoneyInput;
 use App\Support\Countries;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -38,6 +40,26 @@ class StoreProfile extends EditTenantProfile
                         ->dehydrated(false)
                         ->helperText('Contact support to change your legal entity.'),
 
+                    FileUpload::make('logo')
+                        ->label('Store logo')
+                        ->helperText('Square image works best. Shown on your store page, product listings and cart.')
+                        ->image()
+                        ->imageEditor()
+                        ->disk('public')
+                        ->directory('vendors/logos')
+                        ->visibility('public')
+                        ->maxSize(2048),
+
+                    FileUpload::make('banner')
+                        ->label('Store banner')
+                        ->helperText('Wide image shown behind your store name.')
+                        ->image()
+                        ->imageEditor()
+                        ->disk('public')
+                        ->directory('vendors/banners')
+                        ->visibility('public')
+                        ->maxSize(4096),
+
                     Textarea::make('about')
                         ->label('About your company')
                         ->rows(4)
@@ -59,9 +81,8 @@ class StoreProfile extends EditTenantProfile
                         ->numeric()
                         ->helperText('Shown to buyers on your store page.'),
 
-                    TextInput::make('min_order_value')
-                        ->label('Minimum order value (cents)')
-                        ->numeric(),
+                    MoneyInput::make('min_order_value')
+                        ->label('Minimum order value (USD)'),
                 ]),
         ]);
     }

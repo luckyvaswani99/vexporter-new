@@ -7,6 +7,8 @@ use App\Models\CartItem;
 use App\Models\LedgerEntry;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\Product;
+use App\Models\ProductVariant;
 use App\Models\SubOrder;
 use App\Models\User;
 use App\Models\Vendor;
@@ -38,6 +40,8 @@ class PlaceOrder
         }
 
         return DB::transaction(function () use ($buyer, $cart, $items, $data): Order {
+            $this->revalidate($items);
+
             $order = Order::create([
                 'reference' => $this->reference(),
                 'buyer_id' => $buyer->id,
@@ -75,6 +79,37 @@ class PlaceOrder
 
             return $order->refresh();
         });
+    }
+
+    /**
+     * The cart is a snapshot; the catalogue may have moved since. Re-check
+     * everything that costs or risks money against the locked product rows:
+     * still on sale, enough stock, the current price — then take the stock.
+     *
+     * @param  Collection<int, CartItem>  $items
+     */
+    private function revalidate(Collection $items): void
+    {
+        foreach ($items as $item) {
+            $product = Product::visible()->with('tierPrices')->lockForUpdate()->find($item->product_id);
+            $variant = $item->product_variant_id ? ProductVariant::lockForUpdate()->find($item->product_variant_id) : null;
+            $label = $item->snapshot['name'] ?? 'An item';
+
+            if (! $product || $product->requiresQuote()) {
+                throw ValidationException::withMessages(['cart' => "{$label} is no longer available. Please remove it from your cart."]);
+            }
+
+            $holder = $variant ?? $product;
+
+            if ((int) $holder->stock_qty < $item->qty) {
+                throw ValidationException::withMessages(['cart' => "Only {$holder->stock_qty} of {$label} left in stock. Please reduce the quantity."]);
+            }
+
+            $holder->decrement('stock_qty', $item->qty);
+
+            $item->unit_price = $product->priceForQty($item->qty, $variant);
+            $item->setRelation('product', $product);
+        }
     }
 
     /** @param  Collection<int, CartItem>  $items */

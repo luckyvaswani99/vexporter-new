@@ -37,9 +37,7 @@
             @if ($vendor)
                 <div class="mb-8 rounded-2xl bg-white border border-gray-100 shadow-sm p-6 flex flex-wrap items-center justify-between gap-4">
                     <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 rounded-xl bg-gradient-to-br {{ $vendor->avatar_gradient }} text-white flex items-center justify-center font-bold text-lg">
-                            {{ $vendor->initial }}
-                        </div>
+                        <x-vendor.avatar :vendor="$vendor" class="w-12 h-12 rounded-xl text-lg" />
                         <div>
                             <p class="font-bold text-brand-dark">{{ $vendor->name }}</p>
                             <p class="text-sm text-gray-500">

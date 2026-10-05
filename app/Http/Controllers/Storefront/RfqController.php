@@ -42,7 +42,14 @@ class RfqController extends Controller
             'destination_country' => ['required', 'string', 'size:2'],
             'incoterm' => ['required', 'in:EXW,FOB,CIF,DDP,DAP,CFR'],
             'delivery_by' => ['nullable', 'date', 'after:today'],
+            'attachments' => ['nullable', 'array', 'max:5'],
+            'attachments.*' => ['file', 'mimes:jpg,jpeg,png,webp,pdf', 'max:5120'],
         ]);
+
+        $data['attachments'] = collect($request->file('attachments', []))
+            ->map(fn ($file) => ['path' => $file->store('rfq-attachments', 'public'), 'name' => $file->getClientOriginalName()])
+            ->values()
+            ->all();
 
         $rfq = $submit->handle($request->user(), $data);
 

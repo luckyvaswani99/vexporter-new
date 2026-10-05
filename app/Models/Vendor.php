@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Storage;
 use Spatie\Activitylog\Models\Activity;
 use Spatie\Activitylog\Models\Concerns\LogsActivity;
 use Spatie\Activitylog\Support\LogOptions;
@@ -211,6 +212,16 @@ class Vendor extends Model
     public function commissionPercent(): float
     {
         return (float) ($this->commission_percent ?? config('vexporter.commission_percent'));
+    }
+
+    protected function logoUrl(): Attribute
+    {
+        return Attribute::get(fn () => $this->logo ? Storage::disk('public')->url($this->logo) : null);
+    }
+
+    protected function bannerUrl(): Attribute
+    {
+        return Attribute::get(fn () => $this->banner ? Storage::disk('public')->url($this->banner) : null);
     }
 
     protected function initial(): Attribute

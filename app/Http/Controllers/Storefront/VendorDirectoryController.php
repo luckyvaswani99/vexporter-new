@@ -51,7 +51,7 @@ class VendorDirectoryController extends Controller
             'vendor' => $vendor,
             'products' => Product::visible()
                 ->where('vendor_id', $vendor->id)
-                ->with(['vendor', 'category', 'certificates'])
+                ->with(['vendor', 'category', 'certificates', 'images'])
                 ->when($request->query('q'), fn (Builder $query, string $term) => $query->where('name', 'like', "%{$term}%"))
                 ->orderByDesc('is_featured')
                 ->orderByDesc('rating_cache')

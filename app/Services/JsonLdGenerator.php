@@ -16,7 +16,7 @@ class JsonLdGenerator
             '@type' => 'Organization',
             'name' => config('app.name', 'VEXPORTER'),
             'url' => route('home'),
-            'logo' => asset('images/logo.svg'),
+            'logo' => brand_logo_url(),
             'description' => 'Where The World Trades — Multivendor B2B E-Commerce Platform.',
             'contactPoint' => [
                 '@type' => 'ContactPoint',

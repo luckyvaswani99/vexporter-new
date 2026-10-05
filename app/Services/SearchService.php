@@ -53,6 +53,9 @@ class SearchService
                 $search->orWhere('name', 'like', "%{$t}%")
                     ->orWhere('sku', 'like', "%{$t}%")
                     ->orWhere('short_description', 'like', "%{$t}%")
+                    ->orWhere('generic_name', 'like', "%{$t}%")
+                    ->orWhere('brand_name', 'like', "%{$t}%")
+                    ->orWhere('manufacturer', 'like', "%{$t}%")
                     ->orWhereRelation('vendor', 'name', 'like', "%{$t}%")
                     ->orWhereRelation('category', 'name', 'like', "%{$t}%");
             }

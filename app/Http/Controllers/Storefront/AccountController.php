@@ -50,7 +50,7 @@ class AccountController extends Controller
     {
         return view('account.wishlist', [
             'products' => Wishlist::where('user_id', $request->user()->id)
-                ->with(['product.vendor', 'product.category', 'product.certificates'])
+                ->with(['product.vendor', 'product.category', 'product.certificates', 'product.images'])
                 ->latest()
                 ->get()
                 ->pluck('product')

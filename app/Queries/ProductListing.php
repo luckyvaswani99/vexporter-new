@@ -48,7 +48,7 @@ class ProductListing
             : self::PER_PAGE[0];
 
         return $this->sorted($this->filtered())
-            ->with(['vendor', 'category', 'certificates'])
+            ->with(['vendor', 'category', 'certificates', 'images'])
             ->paginate($perPage)
             ->withQueryString();
     }

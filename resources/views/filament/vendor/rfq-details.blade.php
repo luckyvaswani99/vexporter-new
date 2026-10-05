@@ -6,6 +6,8 @@
 <div class="space-y-4 text-sm">
     <p class="text-gray-600 dark:text-gray-300 whitespace-pre-line">{{ $rfq->description }}</p>
 
+    <x-rfq.attachments :rfq="$rfq" />
+
     <dl class="grid grid-cols-2 gap-4">
         <div>
             <dt class="text-xs uppercase tracking-wide text-gray-400">Quantity</dt>

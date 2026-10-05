@@ -2,6 +2,7 @@
 
 namespace App\Filament\Vendor\Resources\Quotes\Tables;
 
+use App\Filament\Support\MoneyInput;
 use App\Models\Quote;
 use App\Support\Money;
 use Filament\Actions\Action;
@@ -99,7 +100,7 @@ class QuotesTable
                         'payment_terms' => $record->payment_terms,
                     ])
                     ->schema([
-                        TextInput::make('shipping')->label('Freight (cents)')->numeric()->required(),
+                        MoneyInput::make('shipping')->label('Freight')->required(),
                         TextInput::make('lead_time_days')->label('Lead time (days)')->numeric(),
                         DatePicker::make('validity_until')->label('Valid until'),
                         TextInput::make('payment_terms'),

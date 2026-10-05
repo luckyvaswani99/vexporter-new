@@ -3,6 +3,7 @@
 namespace App\Providers\Filament;
 
 use App\Filament\Vendor\Pages\StoreProfile;
+use App\Filament\Vendor\Widgets\GetStarted;
 use App\Filament\Vendor\Widgets\StoreOverview;
 use App\Models\Vendor;
 use Filament\Http\Middleware\Authenticate;
@@ -53,6 +54,7 @@ class VendorPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Vendor/Widgets'), for: 'App\Filament\Vendor\Widgets')
             ->widgets([
+                GetStarted::class,
                 StoreOverview::class,
             ])
             ->middleware([

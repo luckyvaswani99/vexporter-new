@@ -16,9 +16,7 @@
 
 <article {{ $attributes->merge(['class' => 'vendor-card bg-white rounded-2xl p-6 border border-gray-100 hover:shadow-xl transition']) }}>
     <div class="flex items-center gap-4 mb-4">
-        <div class="w-16 h-16 bg-gradient-to-br {{ $vendor->avatar_gradient ?? 'from-gray-500 to-gray-700' }} rounded-xl flex items-center justify-center text-white text-2xl font-bold shadow-lg shrink-0">
-            {{ $vendor->initial ?? mb_substr($vendor->name, 0, 1) }}
-        </div>
+        <x-vendor.avatar :vendor="$vendor" class="w-16 h-16 rounded-xl text-2xl shadow-lg" />
         <div class="min-w-0">
             <h3 class="font-bold text-brand-dark truncate">
                 <a href="{{ route('vendors.show', $vendor->slug) }}" class="hover:text-brand-red transition">{{ $vendor->name }}</a>
