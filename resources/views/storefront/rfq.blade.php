@@ -67,7 +67,7 @@
 
                     <x-ui.field name="unit" label="Unit" required>
                         <select id="unit" name="unit" class="w-full rounded-xl border-2 border-gray-200 bg-gray-50 px-4 py-3 text-sm focus:border-brand-red focus:outline-none">
-                            @foreach (['kg', 'ton', 'unit', 'set', 'pack', 'piece', 'litre', 'kw'] as $unit)
+                            @foreach (['kg', 'ton', 'unit', 'set', 'pack', 'strip', 'box', 'vial', 'piece', 'litre', 'kw'] as $unit)
                                 <option value="{{ $unit }}" @selected(old('unit', $product?->unit) === $unit)>{{ $unit }}</option>
                             @endforeach
                         </select>
