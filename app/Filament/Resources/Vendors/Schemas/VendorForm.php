@@ -125,9 +125,13 @@ class VendorForm
                     ->collapsed()
                     ->schema([
                         TextInput::make('avatar_gradient')
+                            ->default('from-gray-500 to-gray-700')
+                            ->required()
                             ->helperText('Tailwind gradient classes used on the storefront card.'),
 
                         Select::make('tag_tone')
+                            ->default('gray')
+                            ->required()
                             ->options(collect(array_keys(Product::TONE_CLASSES))
                                 ->mapWithKeys(fn (string $tone) => [$tone => ucfirst($tone)])
                                 ->all()),
